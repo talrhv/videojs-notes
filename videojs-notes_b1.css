@@ -1,0 +1,33 @@
+.vjs-note-marker {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: yellow;
+  cursor: pointer;
+}
+
+.vjs-note-marker .note-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 4px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.vjs-note-marker:hover .note-tooltip {
+  display: block;
+}
+
+.note-editor {
+  width: 120px;
+  height: 50px;
+  font-size: 12px;
+}
