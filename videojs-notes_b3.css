@@ -1,0 +1,79 @@
+/* ===== Base marker: thin line + large hit area ===== */
+.vjs-note-marker {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: yellow;
+  cursor: pointer;
+
+  /* הגדלת אזור ה־hover אנכית */
+  padding: 8px 0;          /* 8px למעלה ולמטה */
+  margin-top: -8px;        /* מבטל את ההיסט padding למעלה/מטה */
+  box-sizing: content-box;
+
+  /* transition לאנימציית hover */
+  transform-origin: left center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 20;
+}
+
+/* ===== Expand marker on hover ===== */
+.vjs-note-marker:hover {
+  transform: scaleX(3);     /* מרחיב לשלושה מקומות רוחב */
+  background-color: orange;
+}
+
+/* ===== Tooltip ===== */
+.vjs-note-marker .note-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;               /* מעל הקו */
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);  
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;       /* לא יתפוס קליקים ועכבר */
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 30;
+}
+
+/* Show tooltip when hovering the marker */
+.vjs-note-marker:hover .note-tooltip {
+  display: block;
+  opacity: 1;
+}
+
+/* ===== Editor (on click) ===== */
+.note-editor {
+  position: absolute;
+  top: -110%;                 /* מעל הקו */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  width: 200px;
+  z-index: 30;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.note-editor textarea {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 6px;
+  padding: 4px;
+  font-size: 13px;
+}
+
+.note-editor button {
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
