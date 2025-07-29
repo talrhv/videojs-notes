@@ -1,0 +1,111 @@
+/* ===== Container (invisible) לתפיסת ה‑hover ===== */
+.vjs-note-marker {
+  position: absolute;
+  top: 0;
+  width: 0;            /* אין רוחב “אמיתי” */
+  height: 100%;
+
+  /* “Hit‑zone” אנכי להקלה על ה‑hover */
+  padding: 8px 0;
+  margin-top: -8px;
+  box-sizing: content-box;
+
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* ===== הפס הצהוב הממשי, עם אנימציית הרחבה ===== */
+.vjs-note-marker::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -2px;          /* חצי רוחב הפס */
+  width: 4px;
+  height: 100%;
+  background-color: yellow;
+
+  transform-origin: center center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* הרחבה בצד ה‑X בלבד, בלי להשפיע על הילדים (ה‑tooltip) */
+.vjs-note-marker:hover::before {
+  transform: scaleX(3);
+  background-color: orange;
+}
+
+/* ===== Tooltip לקריאה בלבד ===== */
+.vjs-note-marker .note-tip-read {
+  display: block;
+  position: absolute;
+  bottom: calc(100% + 6px);  
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 30;
+}
+
+/* הצגת ה‑tooltip כשהעכבר מעל ה‑marker (ה־container) */
+.vjs-note-marker:hover .note-tip-read {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== Editor (on click) ===== */
+.note-tip-edit {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  width: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 30;
+}
+
+.note-tip-edit .note-ta {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 6px;
+  padding: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.note-tip-edit .note-act {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.note-tip-edit .note-save,
+.note-tip-edit .note-cancel {
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+}
+
+.note-tip-edit .note-save {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.note-tip-edit .note-cancel {
+  background-color: #aaa;
+  color: #fff;
+}
