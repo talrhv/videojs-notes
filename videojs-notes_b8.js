@@ -110,6 +110,7 @@
     }
   }
 
+  StickyNotes.closeNoteModal = closeNoteModal;
   StickyNotes.VERSION = '1.0.5';
   videojs.registerPlugin('stickyNotes', StickyNotes);
 
