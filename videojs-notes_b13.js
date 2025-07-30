@@ -54,7 +54,7 @@
         tip.className='note-tip-read';
         tip.textContent = note.text||'';
         mk.appendChild(tip);
-        mk.addEventListener('click',e=>{e.stopPropagation(); showNoteModal(note,this.player);});
+        mk.addEventListener('click',e=>{e.stopPropagation(); showNoteModal(note,this.player_);});
         bar.appendChild(mk);
       });
     }
