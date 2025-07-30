@@ -102,7 +102,7 @@
     addNote(n)       { this.player.noteMarkersProgressBarControl.addNote(n); }
     updateNote(i,d)  { this.player.noteMarkersProgressBarControl.updateNote(i,d); }
     removeNote(i)    { this.player.noteMarkersProgressBarControl.removeNote(i); }
-    closeNoteModal() { this.player.noteMarkersProgressBarControl.closeNoteModal(); }
+    closeNoteModal() { closeNoteModal(); }
     notes(arr) {
       if (!Array.isArray(arr)) return;
       const ctrl = this.player.noteMarkersProgressBarControl;
