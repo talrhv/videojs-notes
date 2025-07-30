@@ -52,16 +52,23 @@
         const tooltip = document.createElement('div');
         tooltip.className = 'note-tooltip-readonly';
         tooltip.style.display = 'none';
-        document.body.appendChild(tooltip); // שים אותו ב־body
+        tooltip.style.position = 'absolute';
+        tooltip.style.zIndex = '1000';
+        tooltip.style.pointerEvents = 'none';
+        document.body.appendChild(tooltip);
         
         mk.addEventListener('mouseenter', () => {
           const rect = mk.getBoundingClientRect();
-          tooltip.style.display = 'block';
-          tooltip.style.position = 'absolute';
-          tooltip.style.top = `${rect.top - 10}px`; // או rect.bottom + offset
-          tooltip.style.left = `${rect.left}px`;
-          tooltip.style.zIndex = '1000';
+          const scrollY = window.scrollY || window.pageYOffset;
+          const scrollX = window.scrollX || window.pageXOffset;
         
+          // הצב את הטול־טיפ מעל האלמנט
+          tooltip.style.display = 'block';
+          tooltip.style.top = `${rect.top + scrollY - 12}px`; // קצת מעל הקו
+          tooltip.style.left = `${rect.left + scrollX + rect.width / 2}px`; // אמצע
+          tooltip.style.transform = 'translate(-50%, -100%)';
+        
+          // רנדר הקומפוננטה
           const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
         
           if (isVNode) {
