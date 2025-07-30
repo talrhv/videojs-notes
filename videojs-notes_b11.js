@@ -54,7 +54,7 @@
         tip.className='note-tip-read';
         tip.textContent = note.text||'';
         mk.appendChild(tip);
-        mk.addEventListener('click',e=>{e.stopPropagation(); showNoteModal(note);});
+        mk.addEventListener('click',e=>{e.stopPropagation(); showNoteModal(note,player);});
         bar.appendChild(mk);
       });
     }
@@ -70,8 +70,11 @@
       currentModal = null;
     }
   }
-  function showNoteModal(note) {
+  function showNoteModal(note,player) {
     closeNoteModal();
+     if (!player.paused()) {
+        player.pause();
+      }
     const backdrop=document.createElement('div');
     backdrop.className='vjs-note-modal-backdrop';
     document.body.appendChild(backdrop);
