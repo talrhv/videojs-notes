@@ -57,17 +57,23 @@
         // Tooltip render on hover
         mk.addEventListener('mouseenter', () => {
           tooltip.style.display = 'block';
-          if (note.component && typeof note.component === 'function') {
+        
+          const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
+        
+          if (isVNode) {
+            render(note.component, tooltip);
+          } else if (typeof note.component === 'function') {
             render(h(note.component, { note, readOnly: true }), tooltip);
           } else {
             tooltip.innerHTML = `<div class="note-tip-read">${note.text || ''}</div>`;
           }
         });
-
+        
         mk.addEventListener('mouseleave', () => {
           tooltip.style.display = 'none';
           render(null, tooltip);
         });
+
 
         mk.addEventListener('click', e => {
           e.stopPropagation();
