@@ -1,19 +1,16 @@
-/*! @name videojs-sticky-notes @version 1.0.5 @license MIT */
+/*! @name videojs-sticky-notes @version 1.0.6 @license MIT */
 (function (global, factory) {
   'use strict';
   if (typeof exports === 'object' && typeof module !== 'undefined') {
-    // CommonJS
     var videojsLib = require('video.js');
     var preactLib;
     try { preactLib = require('preact'); } catch (e) { preactLib = global.preact; }
     module.exports = factory(videojsLib, preactLib);
   } else if (typeof define === 'function' && define.amd) {
-    // AMD
     define(['video.js','preact'], function(videojsLib, preactLib){
       return factory(videojsLib, preactLib || global.preact);
     });
   } else {
-    // Browser global
     factory(global.videojs, global.preact);
   }
 }(this, function (videojs, preact) {
@@ -50,11 +47,33 @@
         const mk = document.createElement('div');
         mk.className='vjs-note-marker';
         mk.style.left=(note.time/duration*100)+'%';
-        const tip=document.createElement('span');
-        tip.className='note-tip-read';
-        tip.textContent = note.text||'';
-        mk.appendChild(tip);
-        mk.addEventListener('click',e=>{e.stopPropagation(); showNoteModal(note,this.player_);});
+
+        // Tooltip container
+        const tooltip = document.createElement('div');
+        tooltip.className = 'note-tooltip-readonly';
+        tooltip.style.display = 'none';
+        mk.appendChild(tooltip);
+
+        // Tooltip render on hover
+        mk.addEventListener('mouseenter', () => {
+          tooltip.style.display = 'block';
+          if (note.component && typeof note.component === 'function') {
+            render(h(note.component, { note, readOnly: true }), tooltip);
+          } else {
+            tooltip.innerHTML = `<div class="note-tip-read">${note.text || ''}</div>`;
+          }
+        });
+
+        mk.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+          render(null, tooltip);
+        });
+
+        mk.addEventListener('click', e => {
+          e.stopPropagation();
+          showNoteModal(note, this.player_);
+        });
+
         bar.appendChild(mk);
       });
     }
@@ -70,11 +89,11 @@
       currentModal = null;
     }
   }
-  function showNoteModal(note,player) {
+  function showNoteModal(note, player) {
     closeNoteModal();
-     if (!player.paused()) {
-        player.pause();
-      }
+    if (!player.paused()) {
+      player.pause();
+    }
     const backdrop=document.createElement('div');
     backdrop.className='vjs-note-modal-backdrop';
     document.body.appendChild(backdrop);
@@ -82,7 +101,6 @@
     container.className='vjs-note-modal';
     document.body.appendChild(container);
     if (note.component) {
-      // If component is VNode
       if (typeof note.component==='object' && note.component!==null && note.component.type) {
         render(note.component, container);
       } else {
@@ -113,7 +131,7 @@
       ctrl.renderMarkers();
     }
   }
-  StickyNotes.VERSION = '1.0.5';
+  StickyNotes.VERSION = '1.0.6';
   videojs.registerPlugin('stickyNotes', StickyNotes);
 
   return StickyNotes;
