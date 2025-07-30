@@ -48,21 +48,25 @@
         mk.className='vjs-note-marker';
         mk.style.left=(note.time/duration*100)+'%';
 
-        // Tooltip container
+         // Tooltip container
         const tooltip = document.createElement('div');
         tooltip.className = 'note-tooltip-readonly';
         tooltip.style.display = 'none';
-        mk.appendChild(tooltip);
-
-        // Tooltip render on hover
+        document.body.appendChild(tooltip); // שים אותו ב־body
+        
         mk.addEventListener('mouseenter', () => {
+          const rect = mk.getBoundingClientRect();
           tooltip.style.display = 'block';
+          tooltip.style.position = 'absolute';
+          tooltip.style.top = `${rect.top - 10}px`; // או rect.bottom + offset
+          tooltip.style.left = `${rect.left}px`;
+          tooltip.style.zIndex = '1000';
         
           const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
         
           if (isVNode) {
-            note.component.props.readOnly = true
-            render(note.component, tooltip);
+            const vnodeWithReadonly = h(note.component.type, { ...note.component.props, readOnly: true });
+            render(vnodeWithReadonly, tooltip);
           } else if (typeof note.component === 'function') {
             render(h(note.component, { note, readOnly: true }), tooltip);
           } else {
