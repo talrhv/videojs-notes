@@ -61,6 +61,7 @@
           const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
         
           if (isVNode) {
+            note.component.props.readOnly = true
             render(note.component, tooltip);
           } else if (typeof note.component === 'function') {
             render(h(note.component, { note, readOnly: true }), tooltip);
