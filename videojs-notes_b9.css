@@ -1,3 +1,16 @@
+.video-js .vjs-note-modal {
+  color: initial;
+  background-color: initial;
+  font-size: initial;
+}
+
+.video-js .note-tooltip-readonly {
+  color: initial;
+  font-size: initial;
+  background-color: initial;
+
+}
+
 /* ===== סמן בסיסי על הטיימליין ===== */
 .vjs-note-marker {
   position: absolute;
