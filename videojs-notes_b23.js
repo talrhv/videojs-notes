@@ -72,6 +72,7 @@ mk.addEventListener('mouseenter', () => {
   tooltip.style.top = `${topOffset - 12}px`;
   tooltip.style.left = `${leftOffset + rect.width / 2}px`;
   tooltip.style.transform = 'translate(-50%, -100%)';
+  tooltip.style.pointerEvents = 'auto';
 
   const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
   if (isVNode) {
@@ -103,6 +104,7 @@ mk.addEventListener('mouseleave', () => {
   hideTimeout = setTimeout(() => {
     if (!isHoveringTooltip) {
       tooltip.style.display = 'none';
+      tooltip.style.pointerEvents = 'none';
       render(null, tooltip);
     }
   }, 2000);
