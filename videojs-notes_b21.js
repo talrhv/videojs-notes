@@ -59,41 +59,47 @@
         tooltip.style.pointerEvents = 'none';
         this.player_.el().appendChild(tooltip);
 
-        mk.addEventListener('mouseenter', () => {
-        const rect = mk.getBoundingClientRect();
-        const scrollY = window.scrollY || window.pageYOffset;
-        const scrollX = window.scrollX || window.pageXOffset;
-      
-        tooltip.style.display = 'block';
-        tooltip.style.top = `${rect.top + scrollY - 12}px`; // מעל הקו
-        tooltip.style.left = `${rect.left + scrollX + rect.width / 2}px`;
-        tooltip.style.transform = 'translate(-50%, -100%)';
-      
-        // רנדר קומפוננטה או טקסט
-        if (typeof note.component === 'function') {
-          render(h(note.component, { note, readOnly: true }), tooltip);
-        } else {
-          tooltip.innerHTML = `<div class="note-tip-read">${note.text || ''}</div>`;
-        }
-      
-        // תיקון חיתוך במסך
-        requestAnimationFrame(() => {
-          const tipRect = tooltip.getBoundingClientRect();
-          const buffer = 24;
-      
-          // חורג שמאלה
-          if (tipRect.left < buffer) {
-            const shift = buffer - tipRect.left;
-            tooltip.style.left = `${rect.left + scrollX + rect.width / 2 + shift}px`;
-          }
-      
-          // חורג ימינה
-          if (tipRect.right > window.innerWidth - buffer) {
-            const shift = tipRect.right - (window.innerWidth - buffer);
-            tooltip.style.left = `${rect.left + scrollX + rect.width / 2 - shift}px`;
-          }
-        });
-      });
+  mk.addEventListener('mouseenter', () => {
+  const rect = mk.getBoundingClientRect();
+  const parentRect = this.player_.el().getBoundingClientRect();
+  const topOffset = rect.top - parentRect.top;
+  const leftOffset = rect.left - parentRect.left;
+
+  tooltip.style.display = 'block';
+  tooltip.style.top = `${topOffset - 12}px`;
+  tooltip.style.left = `${leftOffset + rect.width / 2}px`;
+  tooltip.style.transform = 'translate(-50%, -100%)';
+
+  const isVNode = typeof note.component === 'object' && note.component !== null && ('type' in note.component || 'props' in note.component);
+
+  if (isVNode) {
+    const vnodeWithReadonly = h(note.component.type, { ...note.component.props, readOnly: true });
+    render(vnodeWithReadonly, tooltip);
+  } else if (typeof note.component === 'function') {
+    render(h(note.component, { note, readOnly: true }), tooltip);
+  } else {
+    tooltip.innerHTML = `<div class="note-tip-read">${note.text || ''}</div>`;
+  }
+
+  // מניעת חריגה מהמסך
+  requestAnimationFrame(() => {
+    const tipRect = tooltip.getBoundingClientRect();
+    const buffer = 24;
+
+    let adjustedLeft = leftOffset + rect.width / 2;
+
+    if (tipRect.left < buffer) {
+      const overflow = buffer - tipRect.left;
+      adjustedLeft += overflow;
+    } else if (tipRect.right > window.innerWidth - buffer) {
+      const overflow = tipRect.right - (window.innerWidth - buffer);
+      adjustedLeft -= overflow;
+    }
+
+    tooltip.style.left = `${adjustedLeft}px`;
+  });
+});
+
 
 
         mk.addEventListener('mouseleave', () => {
