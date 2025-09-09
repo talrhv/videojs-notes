@@ -1,0 +1,79 @@
+.video-js .vjs-note-modal {
+  color: initial;
+  background-color: initial;
+  font-size: initial;
+}
+
+.video-js .note-tooltip-readonly {
+  color: initial;
+  font-size: initial;
+  background-color: initial;
+
+}
+
+/* ===== סמן בסיסי על הטיימליין ===== */
+.vjs-note-marker {
+ position: absolute;
+  top: 0;
+  height: 100%;
+  width: 18px;              
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 3;                  
+}
+
+.vjs-note-marker::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+  width: 6px;              
+  height: 100%;
+  background: yellow;
+  transition: width 0.2s, background 0.2s; 
+}
+.vjs-note-marker:hover::before {
+  width: 18px;
+  background: orange;
+}
+
+/* ===== Tooltip מוצב מעל הקו הצהוב ===== */
+.note-tooltip-readonly {
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+  position: absolute;
+  white-space: normal;
+  pointer-events: none;
+  max-width: 280px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ===== חץ קטן מתחת ל-tooltip ===== */
+.note-tooltip-readonly::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0 8px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255) transparent transparent transparent;
+}
+
+/* ===== מודאל — מציג בתוך הווידאו ===== */
+.vjs-note-modal-backdrop {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.vjs-note-modal {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+}
